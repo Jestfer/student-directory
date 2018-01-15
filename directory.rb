@@ -5,7 +5,7 @@ def input_students
   students = []
   # get the first name
   name = gets.chomp
-  
+
   while !name.empty? do
     puts "What's his/her hobbie?"
     hobbie = gets.chomp
@@ -32,7 +32,7 @@ end
 
 def print(students)
   students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort), enjoys #{student[:hobbie]} and was born in #{student[:cob]}"
+    puts "#{student[:name]} (#{student[:cohort]} cohort), enjoys #{student[:hobbie]} and was born in #{student[:cob]}".center(150)
   end
 end
 
