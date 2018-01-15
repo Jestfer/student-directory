@@ -4,18 +4,18 @@ def input_students
   # create an empty array
   students = []
   # get the first name
-  name = gets.chomp
+  name = gets.delete("\n")
   # while the name is not empty, repeat this code
   while !name.empty? do
     # ask for cohort
     puts "Which cohort do you belong to?"
-    cohort = gets.chomp
+    cohort = gets.delete("\n")
     cohort == "" ? cohort = "Mmm... must be from the Heroes Academy" : cohort = cohort.to_sym
     # add the student hash to the array
     students << {name: name, cohort: cohort}
     puts "Now we have #{students.count} students"
     # get another name from the user
-    name = gets.chomp
+    name = gets.delete("\n")
   end
   # return the array of students
   p students
