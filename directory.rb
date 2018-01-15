@@ -28,8 +28,21 @@ def print_header
 end
 
 def print(students)
-  students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  cohorts = []
+
+  students.each do |sentence|
+    if !cohorts.include?(sentence[:cohort])
+      cohorts << sentence[:cohort]
+    end
+  end
+
+  # Iterate over cohorts
+  cohorts.each do |cohort|
+    # Then we iterate, again, through all the names per cohort, until there are
+    # no more names and, then, no more cohorts
+    students.each do |hash|
+      puts hash[:name] if hash[:cohort] == cohort
+    end
   end
 end
 
