@@ -5,23 +5,20 @@ def input_students
   students = []
   # get the first name
   name = gets.chomp
-
+  # while the name is not empty, repeat this code
   while !name.empty? do
-    puts "What's his/her hobbie?"
-    hobbie = gets.chomp
-    hobbie == "" ? hobbie = "Nothing" : hobbie
-
-    puts "What's his/her country of birth?"
-    cob = gets.chomp
-
+    # ask for cohort
+    puts "Which cohort do you belong to?"
+    cohort = gets.chomp
+    cohort == "" ? cohort = "Mmm... must be from the Heroes Academy" : cohort = cohort.to_sym
     # add the student hash to the array
-    students << {name: name, cohort: :november, hobbie: hobbie, cob: cob}
+    students << {name: name, cohort: cohort}
     puts "Now we have #{students.count} students"
-
     # get another name from the user
     name = gets.chomp
   end
   # return the array of students
+  p students
   students
 end
 
@@ -32,7 +29,7 @@ end
 
 def print(students)
   students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort), enjoys #{student[:hobbie]} and was born in #{student[:cob]}".center(150)
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
 
