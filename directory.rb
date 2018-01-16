@@ -5,18 +5,18 @@ def input_students
   puts "To finish, just hit return twice"
 
   # get the first name
-  name = gets.chomp
+  name = STDIN.gets.chomp
   # while the name is not empty, repeat this code
   while !name.empty? do
     # ask for cohort
     puts "Which cohort do you belong to?"
-    cohort = gets.chomp
+    cohort = STDIN.gets.chomp
     cohort == "" ? cohort = "Mmm... must be from the Heroes Academy" : cohort = cohort.to_sym
     # add the student hash to the array
     @students << {name: name, cohort: cohort}
     puts "Now we have #{@students.count} students"
     # get another name from the user
-    name = gets.chomp
+    name = STDIN.gets.chomp
   end
 end
 
@@ -82,8 +82,8 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     # Parallel assignment
     # Each line is an array with 'name' and 'cohort' data on it
@@ -94,11 +94,24 @@ def load_students
   file.close
 end
 
-def interactive_menu
-  loop do
-    print_menu
-    process(gets.chomp)
+def try_load_students
+  filename = ARGV.first # first argument from command line
+  return if filename.nil? # exit the method if argument not given
+  if File.exists?(filename) # if it exists
+    load_students(filename)
+      puts "Loaded #{@students.count} students from #{filename}"
+  else # file does not exist
+    puts "Sorry, #{filename} does not exist."
+    exit # bye-bye
   end
 end
 
+def interactive_menu
+  loop do
+    print_menu
+    process(STDIN.gets.chomp)
+  end
+end
+
+try_load_students
 interactive_menu
