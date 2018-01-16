@@ -1,8 +1,9 @@
+@students = [] # all methods can access it
+
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  # create an empty array
-  students = []
+
   # get the first name
   name = gets.chomp
   # while the name is not empty, repeat this code
@@ -12,13 +13,11 @@ def input_students
     cohort = gets.chomp
     cohort == "" ? cohort = "Mmm... must be from the Heroes Academy" : cohort = cohort.to_sym
     # add the student hash to the array
-    students << {name: name, cohort: cohort}
-    puts "Now we have #{students.count} students"
+    @students << {name: name, cohort: cohort}
+    puts "Now we have #{@students.count} students"
     # get another name from the user
     name = gets.chomp
   end
-  # return the array of students
-  students
 end
 
 def print_header
@@ -26,45 +25,50 @@ def print_header
   puts "-------------"
 end
 
-def print(students)
-  students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)" if students.length > 0
+def print_students_list
+  @students.each do |student|
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
 
-def print_footer(students)
-  if students.count == 1
-    puts "Overall, we have #{students.count} great student"
+def print_footer
+  if @students.count == 1
+    puts "Overall, we have #{@students.count} great student"
   else
-    puts "Overall, we have #{students.count} great students"
+    puts "Overall, we have #{@students.count} great students"
   end
 end
 
-def interactive_menu
-  students = []
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
 
-  loop do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit"
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
 
-    selection = gets.chomp
-
-    case selection
+def process(selection)
+  case selection
     when "1"
-      students = input_students
+      input_students
     when "2"
-      print_header
-      print(students)
-      print_footer(students)
+      show_students
     when "9"
       exit
     else
       puts "I don't know what you meant, try again"
-    end
   end
 end
 
+def interactive_menu
+  loop do
+    print_menu
+    process(gets.chomp)
+  end
+end
 
-# nothing happens until we call the methods
 interactive_menu
