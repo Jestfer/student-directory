@@ -7,22 +7,30 @@ def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
 
-  @name = STDIN.gets.chomp
+  add_new_student
 
-  while !@name.empty? do
-    puts "Which cohort do you belong to?"
-    @cohort = STDIN.gets.chomp
-    @cohort == "" ? @cohort = "Mmm... must be from the Heroes Academy" : @cohort = @cohort
-    # Method to add the student hash to the array
-    store_student
-    puts "Now we have #{@students.count} students"
-
-    @name = STDIN.gets.chomp
-  end
+  keep_adding_students
 end
 
 def store_student
   @students << {name: @name, cohort: @cohort.to_sym}
+end
+
+def add_new_student
+  @name = STDIN.gets.chomp
+end
+
+def keep_adding_students
+  while !@name.empty? do
+    puts "Which cohort do you belong to?"
+    @cohort = STDIN.gets.chomp
+    @cohort == "" ? @cohort = "Mmm... must be from the Heroes Academy" : @cohort
+
+    store_student
+    puts "Now we have #{@students.count} students"
+
+    add_new_student
+  end
 end
 
 def print_header
@@ -58,7 +66,7 @@ def show_students
   print_footer
 end
 
-def process(selection)
+def choose_option(selection)
   case selection
     when "1"
       input_students
@@ -97,8 +105,7 @@ def load_students(filename = "students.csv")
 end
 
 def try_load_students
-  # filename = ARGV.first # first argument from command line
-  filename = "students.csv"
+  filename = ARGV.first # first argument from command line
   return if filename.nil? # exit the method if argument not given
   if File.exists?(filename)
     load_students(filename)
@@ -112,7 +119,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(STDIN.gets.chomp)
+    choose_option(STDIN.gets.chomp)
   end
 end
 
