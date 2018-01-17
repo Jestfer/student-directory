@@ -1,3 +1,5 @@
+require 'csv'
+
 # All methods can access these variables below
 @students = []
 @name = ""
@@ -91,30 +93,26 @@ def save_students
   puts "Please add the file (and extension) where you'd like to save the list."
   user_file = gets.chomp
 
-  # File.open using block, file closes automatically after block ends
-  File.open(user_file, "w") do |file|
+  CSV.open(user_file, "w") do |row_to_csv|
     @students.each do |student|
-      student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(",")
-      file.puts csv_line
+      row_to_csv << [student[:name], student[:cohort]]
     end
+  end
 
   puts "Done! Your student(s) list has been stored into #{user_file}"
-  end
 end
 
 def load_students(filename = "students.csv")
   puts "Please add the file (and extension) where you'd like to load the list from."
   filename = gets.chomp
 
-  File.open(filename, "r") do |file|
-    file.readlines.each do |line|
-      @name, @cohort = line.chomp.split(",")
+  CSV.foreach(filename) do |row| # each row is an Array for CSV
+      @name = row[0]
+      @cohort = row[1]
       store_student
-    end
-    
-  puts "Done! Now choose option 2 to see the list."
   end
+
+  puts "Done! Now choose option 2 to see the list."
 end
 
 def try_load_students
