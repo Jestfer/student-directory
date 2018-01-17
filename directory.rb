@@ -4,7 +4,6 @@
 @cohort = ""
 
 def input_students
-  puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
 
   add_new_student
@@ -69,14 +68,19 @@ end
 def choose_option(selection)
   case selection
     when "1"
+      puts "Please add the student(s) name(s)"
       input_students
     when "2"
+      puts "Displaying the student(s) for your academy."
       show_students
     when "3"
+      puts "Saving the student(s) data into your file."
       save_students
     when "4"
+      puts "Loading the student(s) data from your file"
       load_students
     when "9"
+      puts "See you soon"
       exit
     else
       puts "I don't know what you meant, try again"
