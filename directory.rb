@@ -90,27 +90,31 @@ end
 def save_students
   puts "Please add the file (and extension) where you'd like to save the list."
   user_file = gets.chomp
-  # file = File.open("students.csv", "w")
-  file = File.open(user_file, "w")
-  
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+
+  # File.open using block, file closes automatically after block ends
+  File.open(user_file, "w") do |file|
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
+    end
+
+  puts "Done! Your student(s) list has been stored into #{user_file}"
   end
-  file.close
 end
 
 def load_students(filename = "students.csv")
   puts "Please add the file (and extension) where you'd like to load the list from."
   filename = gets.chomp
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
 
-  @name, @cohort = line.chomp.split(',')
-    store_student
+  File.open(filename, "r") do |file|
+    file.readlines.each do |line|
+      @name, @cohort = line.chomp.split(",")
+      store_student
+    end
+    
+  puts "Done! Now choose option 2 to see the list."
   end
-  file.close
 end
 
 def try_load_students
