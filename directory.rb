@@ -1,57 +1,8 @@
 require 'csv'
 
-# All methods can access these variables below
 @students = []
 @name = ""
 @cohort = ""
-
-def input_students
-  puts "To finish, just hit return twice"
-
-  add_new_student
-
-  keep_adding_students
-end
-
-def store_student
-  @students << {name: @name, cohort: @cohort.to_sym}
-end
-
-def add_new_student
-  @name = STDIN.gets.chomp
-end
-
-def keep_adding_students
-  while !@name.empty? do
-    puts "Which cohort do you belong to?"
-    @cohort = STDIN.gets.chomp
-    @cohort == "" ? @cohort = "Mmm... must be from the Heroes Academy" : @cohort
-
-    store_student
-    puts "Now we have #{@students.count} students"
-
-    add_new_student
-  end
-end
-
-def print_header
-  puts "The students of Villains Academy"
-  puts "-------------"
-end
-
-def print_students_list
-  @students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
-  end
-end
-
-def print_footer
-  if @students.count == 1
-    puts "Overall, we have #{@students.count} great student"
-  else
-    puts "Overall, we have #{@students.count} great students"
-  end
-end
 
 def print_menu
   puts "1. Input the students"
@@ -59,12 +10,6 @@ def print_menu
   puts "3. Save the list to students.csv"
   puts "4. Load the list from students.csv"
   puts "9. Exit"
-end
-
-def show_students
-  print_header
-  print_students_list
-  print_footer
 end
 
 def choose_option(selection)
@@ -89,6 +34,60 @@ def choose_option(selection)
   end
 end
 
+def print_header
+  puts "The students of Villains Academy"
+  puts "-------------"
+end
+
+def input_students
+  puts "To finish, just hit return twice"
+
+  add_new_student
+
+  keep_adding_students
+end
+
+def add_new_student
+  @name = STDIN.gets.chomp
+end
+
+def keep_adding_students
+  while !@name.empty? do
+    puts "Which cohort do you belong to?"
+    @cohort = STDIN.gets.chomp
+    @cohort == "" ? @cohort = "Mmm... must be from the Heroes Academy" : @cohort
+
+    store_student
+    puts "Now we have #{@students.count} students"
+
+    add_new_student
+  end
+end
+
+def store_student
+  @students << {name: @name, cohort: @cohort.to_sym}
+end
+
+def print_students_list
+  @students.each do |student|
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  end
+end
+
+def print_footer
+  if @students.count == 1
+    puts "Overall, we have #{@students.count} great student"
+  else
+    puts "Overall, we have #{@students.count} great students"
+  end
+end
+
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
+
 def save_students
   puts "Please add the file (and extension) where you'd like to save the list."
   user_file = gets.chomp
@@ -106,7 +105,7 @@ def load_students(filename = "students.csv")
   puts "Please add the file (and extension) where you'd like to load the list from."
   filename = gets.chomp
 
-  CSV.foreach(filename) do |row| # each row is an Array for CSV
+  CSV.foreach(filename) do |row|
       @name = row[0]
       @cohort = row[1]
       store_student
@@ -116,8 +115,8 @@ def load_students(filename = "students.csv")
 end
 
 def try_load_students
-  filename = ARGV.first # first argument from command line
-  return if filename.nil? # exit the method if argument not given
+  filename = ARGV.first
+  return if filename.nil?
   if File.exists?(filename)
     load_students(filename)
       puts "Loaded #{@students.count} students from #{filename}"
