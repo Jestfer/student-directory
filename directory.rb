@@ -88,7 +88,10 @@ def choose_option(selection)
 end
 
 def save_students
-  file = File.open("students.csv", "w")
+  puts "Please add the file (and extension) where you'd like to save the list."
+  user_file = gets.chomp
+  # file = File.open("students.csv", "w")
+  file = File.open(user_file, "w")
   
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
@@ -99,6 +102,8 @@ def save_students
 end
 
 def load_students(filename = "students.csv")
+  puts "Please add the file (and extension) where you'd like to load the list from."
+  filename = gets.chomp
   file = File.open(filename, "r")
   file.readlines.each do |line|
 
