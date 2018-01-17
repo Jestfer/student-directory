@@ -1,23 +1,28 @@
-@students = [] # all methods can access it
+# All methods can access these variables below
+@students = []
+@name = ""
+@cohort = ""
 
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
 
-  # get the first name
-  name = STDIN.gets.chomp
-  # while the name is not empty, repeat this code
-  while !name.empty? do
-    # ask for cohort
+  @name = STDIN.gets.chomp
+
+  while !@name.empty? do
     puts "Which cohort do you belong to?"
-    cohort = STDIN.gets.chomp
-    cohort == "" ? cohort = "Mmm... must be from the Heroes Academy" : cohort = cohort.to_sym
-    # add the student hash to the array
-    @students << {name: name, cohort: cohort}
+    @cohort = STDIN.gets.chomp
+    @cohort == "" ? @cohort = "Mmm... must be from the Heroes Academy" : @cohort = @cohort
+    # Method to add the student hash to the array
+    store_student
     puts "Now we have #{@students.count} students"
-    # get another name from the user
-    name = STDIN.gets.chomp
+
+    @name = STDIN.gets.chomp
   end
+end
+
+def store_student
+  @students << {name: @name, cohort: @cohort.to_sym}
 end
 
 def print_header
@@ -71,9 +76,8 @@ def process(selection)
 end
 
 def save_students
-  # open the file for writing
   file = File.open("students.csv", "w")
-  # iterate over the array of students
+  
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
@@ -85,11 +89,9 @@ end
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-    # Parallel assignment
-    # Each line is an array with 'name' and 'cohort' data on it
-    # these are assigned, consecutively, to the variables name and cohort
-  name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+
+  @name, @cohort = line.chomp.split(',')
+    store_student
   end
   file.close
 end
@@ -97,12 +99,12 @@ end
 def try_load_students
   filename = ARGV.first # first argument from command line
   return if filename.nil? # exit the method if argument not given
-  if File.exists?(filename) # if it exists
+  if File.exists?(filename)
     load_students(filename)
       puts "Loaded #{@students.count} students from #{filename}"
-  else # file does not exist
+  else
     puts "Sorry, #{filename} does not exist."
-    exit # bye-bye
+    exit
   end
 end
 
